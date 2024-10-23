@@ -1,3 +1,3 @@
-# backless
+# Backless
 
-A description of this project.
+Backless is a graphical tool that uses resources from the rembg library.
