@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=backless
+Exec=backless
+Icon=io.github.idevecore.Backless
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true
