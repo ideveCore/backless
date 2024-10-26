@@ -1,6 +1,6 @@
 # window.py
 #
-# Copyright 2024 Francisco
+# Copyright 2024 Ideve Core
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,18 +13,59 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk
+from __future__ import annotations
 
-@Gtk.Template(resource_path='/io/github/idevecore/Backless/window.ui')
-class BacklessWindow(Adw.ApplicationWindow):
-    __gtype_name__ = 'BacklessWindow'
+import gi
 
-    label = Gtk.Template.Child()
+gi.require_version("Adw", "1")
+gi.require_version("Gtk", "4.0")
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+from typing import Union, Dict
+from gi.repository import Adw, Gdk, Gio, Gtk
+from .define import RES_PATH
+from .components import Shortcuts
+
+resource = f"{RES_PATH}/window.ui"
+
+def create_main_window(application: Adw.Application):
+  builder = Gtk.Builder.new_from_resource(resource)
+  settings = application.utils.settings
+  window = builder.get_object("window")
+  content = builder.get_object("content")
+  menu_button = builder.get_object("menu_button")
+
+  def load_window_state():
+    settings.bind(
+      key="width",
+      object=window,
+      property="default-width",
+      flags=Gio.SettingsBindFlags.DEFAULT,
+    )
+    settings.bind(
+      key="height",
+      object=window,
+      property="default-height",
+      flags=Gio.SettingsBindFlags.DEFAULT,
+    )
+    settings.bind(
+      key="is-maximized",
+      object=window,
+      property="maximized",
+      flags=Gio.SettingsBindFlags.DEFAULT,
+    )
+    settings.bind(
+      key="is-fullscreen",
+      object=window,
+      property="fullscreened",
+      flags=Gio.SettingsBindFlags.DEFAULT,
+    )
+    window.set_help_overlay(Shortcuts())
+
+  load_window_state()
+  window.set_application(application)
+  window.set_icon_name(application.get_application_id())
+  return window

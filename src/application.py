@@ -1,4 +1,4 @@
-# main.py
+# application.py
 #
 # Copyright 2024 Ideve Core
 #
@@ -13,12 +13,29 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import sys
+import gi
 
-from .application import application
+gi.require_version("Gtk", "4.0")
+gi.require_version("Adw", "1")
 
-main = lambda version : application.run(sys.argv)
+from gi.repository import Adw, Gio
+from .define import APP_ID, RES_PATH
+from .utils import Utils
+from .window import create_main_window
+
+application = Adw.Application(
+  application_id=APP_ID,
+  flags=Gio.ApplicationFlags.DEFAULT_FLAGS,
+  resource_base_path=RES_PATH
+)
+
+def on_activate(user_data: Adw.Application) -> None:
+  user_data.utils = Utils(user_data.get_application_id())
+  create_main_window(user_data).present()
+
+
+application.connect("activate", on_activate)

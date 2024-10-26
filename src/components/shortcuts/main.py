@@ -1,4 +1,4 @@
-# main.py
+# shortcuts.py
 #
 # Copyright 2024 Ideve Core
 #
@@ -13,12 +13,16 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import sys
+from gi.repository import Gtk
+from ...define import RES_PATH
 
-from .application import application
+@Gtk.Template(resource_path=f"{RES_PATH}/components/shortcuts/index.ui")
+class Shortcuts(Gtk.ShortcutsWindow):
+    __gtype_name__ = 'Shortcuts'
 
-main = lambda version : application.run(sys.argv)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)

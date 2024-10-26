@@ -1,4 +1,4 @@
-# main.py
+# __init__.py
 #
 # Copyright 2024 Ideve Core
 #
@@ -13,12 +13,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import sys
-
-from .application import application
-
-main = lambda version : application.run(sys.argv)
+from .shortcuts.main import Shortcuts
